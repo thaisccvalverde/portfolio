@@ -1,0 +1,313 @@
+
+---
+title: "Business Data Analysis Report"
+subtitle: "CSV Import and Data Cleaning"
+author: "Thais Cristina Correa Valverde--668073877"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+# Executive Summary {-}
+
+  This summary presents sales divided by region and quarters during a period of one year and a total of 8,174 customers. It was concluded that sales had a peak during last quarter ($791,250), followed by third quarter ($491,000), second quarter ($489,000), and for last, first quarter ($440,000). Revenue by region was lead by North ($816,250), East ($526,000), South ($524,000), and West ($345,000). There were four sales considered as high performance, with a revenue bigger than $140,000. Three out of four were performance by North branch, and the majority happened during last quarter. As a recommendation for improvements, we advice a marketing plan for seasons of slow sales, and training focus on sales for East, South and West branches for better revenues in the future.   
+
+---
+
+# Data Import and Exploration
+
+## Question 1: CSV Import and Basic Exploration
+
+Create a sample dataset to simulate importing CSV data:
+
+```{r}
+# Create sample regional sales data
+regional_sales <- data.frame(
+  region = c("North", "South", "East", "West", "North", "South", "East", "West",
+             "North", "South", "East", "West", "North", "South", "East", 
+             "North", "South","North"),  
+  quarter = c(rep(c("Q1", "Q2", "Q3", "Q4"), each = 4), "Q4", "Q4"),
+  revenue = c(125000, 98000, 115000, 102000, 
+              138000, 105000, 128000, 118000,
+              142000, 89000, 135000, 125000,
+              155000, 112000, 148000, 165000, 
+              120000, 91250),
+  customers = c(450, 380, 420, 395, 
+                485, 415, 465, 445,
+                520, 350, 485, 470,
+                575, 425, 545, 590, 435,324)
+)
+```
+
+
+A. Use str() to examine the structure of your data. How many observations and variables do you have? What data types are the variables?
+
+```{r}
+str(regional_sales)
+```
+Answer: This database has 18 observations and 4 variables. The datas types are numbers, directions, periods and amount of money.
+
+---
+
+B. Use head() and summary() to explore the data content. What is the range of revenue values? Which region appears in the first few rows?
+
+```{r}
+head(regional_sales)
+summary(regional_sales)
+```
+
+Answer: The range of revenues goes from $89,000 to $165,000, and the region in the first rows are North, South, East, West, North, and South. 
+
+---
+
+C. Use unique() to identify all unique regions and quarters in your dataset. How many different regions and quarters are represented?
+
+```{r}
+unique(regional_sales)
+```
+
+Answer: There are 18 different combinations of Region and Quarters.
+
+---
+
+D. Calculate the total number of customers across all regions and quarters using sum(). What business insight does this total provide?
+
+```{r}
+sum(regional_sales$customers)
+```
+
+Answer: There are a total of 8174 in all regions and quarters together, and average of 454 customers per region and quarter.
+
+---
+
+## Question 2: Using Logical Operations for Business Questions
+
+A. Check for missing values using sum(is.na(regional_sales)). Are there any missing values in this dataset? Why is this check important in real business scenarios?
+
+```{r}
+sum(is.na(regional_sales))
+```
+
+Answer: There is no missing this dataset. In a real business scenario, it is important to identify any missing data because it can be a error made by the data entry person, and missing data can affect decision making due to incorrect numbers.
+
+---
+
+B. Use table() to create frequency tables for the region and quarter variables. Are the data evenly distributed across regions and quarters? What does this tell you about your business operations?
+
+```{r}
+table(regional_sales$region)
+table(regional_sales$quarter)
+```
+
+Answer: Even the revenue being quite evenly distributed by quarterly (with exception of fourth quarter with 6 records), we could see a difference between regions. North is the biggest with 6 items, followed by South with 5, East with 4, and for the last, West with 3. The conclusion of this information is that, even with a quarterly revenue balanced, the North region had more impact in the revenue numbers than the others, especially West. 
+
+---
+ 
+C. Identify any potential data quality issues by finding records where revenue is less than 90,000. Use logical operators to filter and display these records with regional_sales[regional_sales$revenue < 90000, ]. Which region and quarter show concerning performance?
+
+```{r}
+regional_sales[regional_sales$revenue < 90000, ]
+```
+
+Answer: The South region, quarter 3, had a revenue of 89,000. 
+
+---
+
+# Business Logic Analysis
+
+## Question 3: Using Logical Operators for Business Questions
+
+Apply logical operators to answer specific business questions about your regional sales data.
+
+A. Find all records where revenue is greater than 140,000 using regional_sales[regional_sales$revenue > 140000, ]. Which regions and quarters achieved high performance? 
+
+```{r}
+regional_sales[regional_sales$revenue > 140000, ]
+```
+
+Count how many high-performance records exist using nrow().
+
+```{r}
+high_performance <- regional_sales[regional_sales$revenue > 140000, ]
+  nrow(high_performance)
+```
+
+Answer: There are four high performance with a revenue higher than 140,000. Three from the North region (one from third quarter, and two from fourth quarter) and one from East (fourth quarter).
+
+---
+
+B. Identify "Q4" records with revenue greater than $130,000 AND more than 500 customers using the & operator. Display these records and explain what this combination tells you about year-end performance.
+
+```{r}
+regional_sales[regional_sales$revenue > 130000 & regional_sales$customers > 500,]
+```
+
+
+Answer: This combination demonstrate a high performance in the year-end. Half of data from fourth quarter (3 out of 6) had a revenue higher than 130,000 and more than 500 customers.
+
+---
+
+C.Find records from either the "North" OR "East" regions using the | operator. 
+
+```{r}
+north_and_east <- regional_sales[regional_sales$region == "North" | regional_sales$region == "East", ]
+```
+
+Calculate the average revenue for these combined regions using mean(). How does this compare to the overall average revenue?
+
+Average revenue = North and East
+
+```{r}
+mean (north_and_east$revenue)
+```
+
+Overall average revenue
+
+```{r}
+mean (regional_sales$revenue)
+```
+
+Answer: The average of North and East together is higher than the overall, which means they have the highest revenue collection when compared to others regions.
+
+---
+
+D. Create a business performance flag by identifying records that have EITHER revenue below 100,000 OR fewer than 400 customers. Count these concerning records and calculate what percentage of your total records they represent.
+
+```{r}
+regional_sales[regional_sales$revenue < 100000 | regional_sales$customers < 400, ]
+```
+
+Answer: There are 4 records for revenue below 100,000 or fewer than 400 customers, which is 22.22% of total records.
+
+---
+
+# Data Aggregation and Business Insights
+
+## Question 4: Creating Business Summaries
+
+A. Use aggregate() to calculate total revenue by region: aggregate(revenue ~ region, data = regional_sales, sum). Which region generated the highest total revenue across all quarters?
+
+```{r}
+aggregate(revenue ~ region, data = regional_sales, sum)
+```
+
+Answer: North is responsible for the highest total revenue, with 816,250.
+
+---
+
+B. Calculate average customers by quarter using aggregate(customers ~ quarter, data = regional_sales, mean). Which quarter shows the highest average customer count? What business factors might explain this pattern?
+
+```{r}
+aggregate(customers ~ quarter, data = regional_sales, mean)
+```
+
+Answer: Fourth quarter has the highest average of customer. A seasonal factor is a possible explanation for higher customer volume, especially close to holiday season.
+
+---
+
+## Question 5: Executive Summary Creation
+
+A. Create a comprehensive business summary by calculating: total revenue across all regions and quarters, average revenue per quarter, and the number of high-performance records (revenue > $140,000). Present these as a formatted table or clear summary.
+
+```{r}
+total_revenue_by_region <- aggregate(revenue ~ region, data = regional_sales,sum)
+total_revenue_by_quarter <- aggregate(revenue ~ quarter, data = regional_sales,sum)
+revenue_by_quarter <- aggregate(revenue ~ quarter, data = regional_sales, mean)
+total_revenue <- sum(regional_sales$revenue)
+
+
+total_revenue_by_quarter$mean <- revenue_by_quarter$revenue
+
+total_revenue_by_quarter
+```
+
+```{r}
+library(knitr)
+library(kableExtra)
+
+table1 <- knitr::kable(total_revenue_by_quarter, 
+       format = "html",
+       caption = "Total Revenue by Quarter",
+       col.names = c('Quarter','Total Revenue', 'Average Revenue'),
+)%>%
+  kable_styling(bootstrap_options = "bordered",
+                full_width = TRUE,
+                row_label_position = "c",
+                wraptable_width = "float_left",
+                position = "float_left",
+  )
+
+  
+
+table2 <- knitr::kable(total_revenue_by_region,
+                format = "html",
+                caption = "Total Revenue by Region",
+                col.names = c('Region','Total Revenue'),
+                ) %>%
+  kable_styling(bootstrap_options = "bordered",
+                full_width = TRUE,
+                row_label_position = "c",
+                wraptable_width = "float_left",
+                position = "float_right"
+  )
+             
+
+table4 <- knitr::kable(total_revenue, 
+       format = "html", 
+       caption = "Total Revenue for the Year",
+       col.names = c('Year of 2025'),
+)%>%
+  kable_styling(bootstrap_options = "bordered",
+                full_width = TRUE,
+                row_label_position = "c",
+                wraptable_width = "float_left",
+                position = "float_left",
+  ) 
+      
+
+table5 <- knitr::kable(high_performance, 
+       format = "html", 
+       caption = "High Performance Records (Revenue > $140,000)",
+       col.names = c('Region','Quarter', 'Revenue', 'Number of Customers'),
+       
+)%>%
+  kable_styling(bootstrap_options = "bordered",
+                full_width = TRUE,
+                row_label_position = "c",
+                wraptable_width = "float_left",
+                position = "float_left",
+
+) %>%
+  kableExtra::remove_column(1)
+
+
+table1 
+
+table2
+
+table4
+
+table5
+
+
+
+
+```
+
+
+
+---
+
+
+B. Based on your analysis, write a brief business recommendation (3-4 sentences) identifying which region shows the most consistent performance and which quarter typically shows the strongest results. Support your recommendation with specific numbers from your analysis.
+
+
+Answer: 
+
+  According with the business summary by regional sales, North was the strongest region  with a total year revenue of $816,250. The branch was responsible for 37% of our total revenue ($2,211,250). Also, they made 3 out of 4 high performance sales (revenue higher than $140,000), being the majority in the last quarter of the year.
+  On the other side, West sales represented only 15.6% of our sales, with a total revenue of $345,000. This region did not make any high performance sale.
+  Our recommendation is to invest in sales training for South, East and West, with a deeper focus on West branch. As a result, we will be able to level up sales performance across our four regions. Regarding quarters sales, the weakest period was the first and the second, with no high performance sales made. We advice a marketing plan to increase sales in the first semester.  
+  

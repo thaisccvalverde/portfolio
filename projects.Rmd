@@ -1,0 +1,43 @@
+
+---
+title: "My Projects"
+---
+
+## Data Analysis Projects
+
+Here are some of my key projects demonstrating various data analysis skills.
+
+### Project 1: CSV Import and Data Cleaning
+
+**Objective:** Analyze datasets to extract business insights
+
+**Key Skills:**
+
+- API data access
+- Data quality assessment
+- Aggregation and summarization
+- Business recommendation development
+
+[View detailed analysis →](668073877-Test2.html)
+
+---
+
+### Project 2: Data Visualization and Communication
+
+**Objective:** Clean and analyze operational data to identify performance 
+patterns
+
+**Key Skills:**
+
+- CSV data processing
+- Missing data handling
+- Data visualization
+- Executive reporting
+
+[View detailed analysis →](668073877-test3.html)
+
+
+
+---
+
+[← Back to Home](index.html)

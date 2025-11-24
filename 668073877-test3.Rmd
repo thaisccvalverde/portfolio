@@ -1,0 +1,144 @@
+---
+title: "Business Data Analysis Report"
+subtitle: "Data Visualization and Communication"
+author: "Thais Cristina Correa Valverde--668073877"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 2
+    toc_float: true
+---
+
+# Executive Summary {-}
+
+  This report measured three different channels (Mobile, Online, and Retail) for two years with the intention of understand the behavior between revenue, average customer and conversion rate by channel. After refining the data, Online channel had the best conversion of customers to revenue, and also the highest average of customers. Consequently, it make them the biggest total revenue. However, when conversion rate per se was verified, Retail was the channel with the highest number, and also the number one in revenue per customer. What it was concluded is that, even Retail having the best conversion rate, the lower average customers brought total revenue down. To improve overall business, it was proposed a incentive schedule program towards Retail's clients, with the intention of bringing more people to the stores and increase the average number. As soon as average customers on Retail channel rises, it will be matter of time for the total revenue go up as well due to the high conversion rate and average of revenue by customer.
+  
+---
+
+# Data Setup and Business Context
+
+## Question 1: Data Preparation and Initial Analysis
+
+```{r}
+library(ggplot2)
+
+business_data <- read.csv("business_performance.csv")
+```
+
+A) Use str() and summary() to examine your data structure. How many channels and quarters are represented? What is the range of revenue values?
+
+```{r}
+str(business_data)
+summary(business_data)
+```
+Answer: There are 48 quarter, and 48 channels. The range of revenue goes from $150,231 to $412,125. 
+
+B) Use aggregate() to calculate total revenue by channel. Which channel generates the most revenue overall? Use aggregate() again to find average customers by quarter - which quarter typically has the most customers?
+
+```{r}
+aggregate(revenue~channel, data=business_data, sum)
+
+aggregate(customers~quarter, data=business_data,mean)
+
+```
+
+Answer:The Online channel is responsible for the biggest revenue ($5,571,130). The quarter with highest customers average is the third (1,172.917 customers).
+
+
+C) Calculate the revenue per customer for each channel by creating a new variable: business_data$revenue_per_customer <- business_data$revenue / business_data$customers. Then use aggregate() to find the average revenue per customer by channel. Which channel has the highest average revenue per customer? What business insight does this provide?
+
+```{r}
+business_data$revenue_per_customer <- c(business_data$revenue / business_data$customers)
+
+aggregate (revenue_per_customer~channel, data=business_data, mean)
+
+```
+
+Answer: Retail is responsible for the highest average revenue per customer ($314.2239 per customer). Online channel had the biggest revenue on sales; however, retail customers were the ones who spent more per purchase.
+
+# Business Visualization
+
+## Question 2: Creating Professional Charts
+
+A) Create a bar chart showing total revenue by channel using ggplot2.
+
+```{r}
+channel_totals <- aggregate(revenue ~ channel, data = business_data, sum)
+
+ggplot(channel_totals, aes(x = channel, y = revenue)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Total Revenue by Channel", 
+       x = "Sales Channel", y = "Revenue ($)")
+```
+
+Answer: Because online has the highest revenue, we can assume this is the channel with the best scenario for expansion. It would be a great idea to invest more in the Online channel, with the expectations of increasing sales capacity. 
+
+B) Create a scatter plot examining the relationship between customers and revenue, colored by channel.
+
+```{r}
+ggplot(business_data, aes(x = customers, y = revenue, color = channel)) +
+  geom_point(size = 3) +
+  labs(title = "Customer Count vs Revenue by Channel",
+       x = "Number of Customers", y = "Revenue ($)")
+
+```
+
+Which channel appears most efficient at converting customers to revenue? Explain using the visualization.
+
+Answer: Online was the channel that most converted customers to revenue. In the plot, the more the dots near to second quadrant (top right = more customer + more revenue), the higher is the conversion of customers to revenue. We can see the dots in green (customers that used Online Channel) are the majority in the top right, which can conclude it is the most efficient of the three channels.  
+
+# Strategic Recommendations
+
+## Question 3: Action Plan
+
+A) Create a professional summary table using your aggregated data. Calculate and present: total revenue by channel, average customers by channel, and average conversion rate by channel. Format this as a clear, business-ready table.
+
+```{r}
+
+library(knitr)
+library(kableExtra)
+
+
+Total_revenue_by_channel <- aggregate(revenue~channel, data = business_data, sum, na.rm = TRUE)
+
+average_quarterly_customers_by_channel <- aggregate(customers~channel, data = business_data, mean,na.rm = TRUE)
+
+average_conversion_by_channel <- aggregate(conversion_rate~channel, data = business_data, mean, na.rm = TRUE)
+
+
+Total_revenue_by_channel$averagecustomers<-average_quarterly_customers_by_channel$customers
+
+Total_revenue_by_channel$convertion<-average_conversion_by_channel$conversion_rate
+  
+
+(table1 <- knitr::kable(Total_revenue_by_channel, 
+             format = "html",
+             caption = "Overview by Channel",
+             col.names = c("Channel", "Total Revenue ($)","Average Customers","Conversion Rate"),
+             digits = c(0,2,0,2),
+             format.args = list(big.mark = ","),
+             
+)%>%
+  
+  kableExtra::kable_styling(
+  bootstrap_options = "bordered",
+                full_width = TRUE,
+                row_label_position = "c",
+                wraptable_width = "float_left",
+                position = "float_left",
+))
+
+ 
+
+```
+
+
+
+B) Based on your analysis and visualizations, write a strategic recommendation memo (maximum 75 words) that addresses: 
+- One specific, actionable recommendation for improving overall business performance. 
+- Support your point with specific numbers from your analysis
+
+Answer:  Based on the results, Retail is responsible for the higher conversion rate (5.03), and also an revenue average of $314.22 per customer. Even then, the total revenue collected from this channel was the lowest between different channels. The reason for this small revenue is the low average customers, only 542. When compared to others channels (Online with 1,278 and Mobile with 1,560), they have the double or more of customers, consequently bringing revenue up.
+
+One actionable recommendation for improving overall business performance would be to bring more clients to Retails, by a incentive schedule program (e.g: DJ in store, free items, and etc.). With a conversion rate of 5.03 and a revenue per customer of $314.22, the revenue will increase as a consequence.

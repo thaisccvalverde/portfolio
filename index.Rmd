@@ -1,0 +1,31 @@
+
+---
+title: "Welcome to My Portfolio"
+---
+
+## Hello and Welcome!
+
+I'm Thais Valverde, and this is my portfolio. Here you'll find 
+projects showcasing my skills in:
+
+- Data cleaning and transformation
+- Statistical analysis
+- Professional reporting with R Markdown
+
+### Featured Projects
+
+Throughout this portfolio, you'll see analyses covering:
+
+- **Business Performance:** Analyzing operational data for insights
+- **Data Visualization:** Creating compelling correlation between 
+
+### Navigate This Portfolio
+
+Use the menu above to:
+
+- Learn more [about me](about.html)
+- View my [projects](projects.html)
+
+---
+
+*This portfolio was built using R Markdown and is hosted on GitHub Pages.*
