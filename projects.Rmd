@@ -1,24 +1,32 @@
 
 ---
-title: "My Projects"
+title: "Projects"
 ---
 
-## Data Analysis Projects
+## Featured Projects
 
-Here are some of my key projects demonstrating various data analysis skills.
+Each project demonstrates specific technical skills and analytical thinking 
+applied to real-world datasets.
+
+
+### 🔍 Statistical Exploration Project
+
+**Business Challenge:**
 
 ### Project 1: CSV Import and Data Cleaning
 
-**Objective:** Analyze datasets to extract business insights
+**Objective:** Analyze data sets to extract business insights
 
-**Key Skills:**
+**Skills Demonstrated:**
 
 - API data access
 - Data quality assessment
 - Aggregation and summarization
 - Business recommendation development
 
-[View detailed analysis →](668073877-Test2.html)
+**Tools Used:** R, knitr, and kableExtra.
+
+[📊 View Full Analysis](668073877-Test2.html)
 
 ---
 
@@ -34,10 +42,19 @@ patterns
 - Data visualization
 - Executive reporting
 
-[View detailed analysis →](668073877-test3.html)
+**Tools Used:** R, ggplot2, knitr, and kableExtra.
 
-
+[📊 View Full Analysis](668073877-test3.html)
 
 ---
+## Technical Capabilities
+
+Across these projects, I've demonstrated proficiency in:
+
+💻 **Data Acquisition:** CSV files, API integration, government data sources  
+🧹  **Data Cleaning:** Missing value treatment, outlier detection, standardization  
+📈 **Analysis:** Aggregation, correlation, pattern identification  
+📊  **Visualization:** ggplot2, professional charts, executive dashboards  
+📝 **Communication:** R Markdown reports, business recommendations
 
 [← Back to Home](index.html)
